@@ -14,22 +14,19 @@ class BIMGCConan(ConanFile):
     default_options = {"shared": False, "fPIC": True}
 
     def requirements(self):
-        self.requires(f"bx/local@", transitive_headers=True)
-        self.requires(f"astc_encoder/{self.version}")
+        self.requires("bx/local@", transitive_headers=True)
+        self.requires("astc_encoder/local@")
 
     def generate(self):
         tc = CMakeToolchain(self)
         tc.presets_prefix = f"{self.settings.os}_{self.settings.build_type}_{self.settings.arch}"
         tc.generate()
 
-    def build(self):
-        conan.tools.files.rmdir(self, f"{self.folders.base_build}/bimg/3rdparty/astc-encoder")
+    def package(self):
         cmake = CMake(self)
         cmake.configure()
         cmake.build()
         cmake.install()
-
-    def package(self):
         conan.tools.files.copy(self, "*.h",
                                os.path.join(self.folders.base_build, "bimg/include"),
                                os.path.join(self.package_folder, "include"))
