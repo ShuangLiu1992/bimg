@@ -28,7 +28,7 @@ class BIMGCConan(ConanFile):
         cmake.build()
         cmake.install()
         conan.tools.files.copy(self, "*.h",
-                               os.path.join(self.folders.base_build, "bimg/include"),
+                               os.path.join(self.folders.base_source, "include"),
                                os.path.join(self.package_folder, "include"))
 
     def package_info(self):
