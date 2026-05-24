@@ -14,7 +14,7 @@
 #    include <intrin.h>
 #    include <Windows.h>
 #  else
-#    include <x86intrin.h>
+#    include <smmintrin.h>
 #  endif
 #endif
 
