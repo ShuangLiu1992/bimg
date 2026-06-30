@@ -19,7 +19,14 @@
 #    define _bswap(x) _byteswap_ulong(x)
 #    define _bswap64(x) _byteswap_uint64(x)
 #  else
-#    include <x86intrin.h>
+// emscripten: bx adds -msse4.2, so __SSE4_1__ is defined under emcc; <x86intrin.h>
+// then pulls ammintrin/fma4/etc. intrinsics emcc doesn't implement. <smmintrin.h>
+// is the SSE4.1-only header this file actually needs. Not upstreamed.
+#    if defined(__EMSCRIPTEN__)
+#      include <smmintrin.h>
+#    else
+#      include <x86intrin.h>
+#    endif
 #  endif
 #endif
 

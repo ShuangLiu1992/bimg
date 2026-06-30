@@ -8,7 +8,12 @@
 #    include <intrin.h>
 #    include <Windows.h>
 #  else
-#    include <x86intrin.h>
+// emscripten: see ProcessRGB.cpp — <x86intrin.h> pulls intrinsics emcc lacks
+#    if defined(__EMSCRIPTEN__)
+#      include <smmintrin.h>
+#    else
+#      include <x86intrin.h>
+#    endif
 #  endif
 #endif
 
