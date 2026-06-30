@@ -15,10 +15,17 @@
 #include <astcenc.h>
 
 BX_PRAGMA_DIAGNOSTIC_PUSH();
-BX_PRAGMA_DIAGNOSTIC_IGNORED_MSVC(4100) // warning C4100: 'alloc_context': unreferenced formal parameter
+BX_PRAGMA_DIAGNOSTIC_IGNORED_MSVC(4100) // warning C4100: ‘alloc_context’: unreferenced formal parameter
 BX_PRAGMA_DIAGNOSTIC_IGNORED_MSVC(4702) // warning C4702: unreachable code
 BX_PRAGMA_DIAGNOSTIC_IGNORED_CLANG_GCC("-Wunused-parameter") // warning: unused parameter ‘alloc_context’ [-Wunused-parameter]
 #define STB_IMAGE_RESIZE_IMPLEMENTATION
+// Emscripten: stb_image_resize2.h detects SSE2 via __SSE2__ (set by emcc -msimd128)
+// and uses a STBIR__CONST_4_32i macro that expands to (long long) initialisers for
+// __m128i — a C++11-narrowing error with clang -Werror.  Disable the SIMD path;
+// Emscripten’s Wasm SIMD is controlled separately by STBIR_WASM.
+#ifdef __EMSCRIPTEN__
+#  define STBIR_NO_SIMD
+#endif
 #include <stb/stb_image_resize2.h>
 BX_PRAGMA_DIAGNOSTIC_POP();
 
