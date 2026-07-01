@@ -18,8 +18,10 @@
 #    include <stdlib.h>
 #    define _bswap(x) _byteswap_ulong(x)
 #    define _bswap64(x) _byteswap_uint64(x)
+#  elif defined __AVX2__
+#    include <immintrin.h>
 #  else
-#    include <x86intrin.h>
+#    include <smmintrin.h>
 #  endif
 #endif
 

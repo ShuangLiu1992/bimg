@@ -7,8 +7,10 @@
 #  ifdef _MSC_VER
 #    include <intrin.h>
 #    include <Windows.h>
+#  elif defined __AVX2__
+#    include <immintrin.h>
 #  else
-#    include <x86intrin.h>
+#    include <smmintrin.h>
 #  endif
 #endif
 
